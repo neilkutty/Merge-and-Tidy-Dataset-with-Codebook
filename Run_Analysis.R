@@ -1,4 +1,5 @@
-#  Getting and Cleaning Data - Course Project
+# Getting and Cleaning Data - Course Project
+# run_analysis.R submission by github.com/sampsonsimpson
 #_____________________________________________
 
 #clear workspace memory
@@ -77,5 +78,5 @@ tidySet <- cleanSet %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
     
-#print tidySet to console for viewing
-print(tbl_df(tidySet))
+#save tidySet as Rdata file
+save(tidySet, file='tidySet.Rdata')
