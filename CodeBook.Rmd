@@ -1,0 +1,157 @@
+---
+title: "readme"
+author: "Neil Kutty"
+date: "April 28, 2016"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+library(dplyr)
+library(tidyr)
+
+```
+
+## Getting and Cleaning Data - Course Project
+Getting and Cleaning Data Course Projectless 
+The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. You will be required to submit: 1) a tidy data set as described below, 2) a link to a Github repository with your script for performing the analysis, and 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.
+
+One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
+
+http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
+
+Here are the data for the project:
+
+https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+
+You should create one R script called run_analysis.R that does the following.
+
+Merges the training and the test sets to create one data set.
+Extracts only the measurements on the mean and standard deviation for each measurement.
+Uses descriptive activity names to name the activities in the data set
+Appropriately labels the data set with descriptive variable names.
+From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
+Good luck!
+<hr>
+<h1> Submission </h1>
+<h2> Step 1.) </h2>
+<h3> Loading features data </h3>
+<hr>
+The first line below reads the features.txt file into variable `features`. In the second line, we use `grep` to create a vector called `featuresLite` identifying the feature names that have 'mean' and 'std' in the names.  Finally, we filter on those feature names only and store it in the variable `featureNames`. 
+
+```{r features, eval=FALSE, include=TRUE}
+#load features table
+features <- read.table('./UCI HAR Dataset/features.txt')
+
+#create vector for features with 'Mean' and 'Std' 
+featuresLite <- grep('-[Mm]ean()|-[Ss]td()', features[,2])
+
+#get just the feature names for 'Mean' and 'Std' filtering on logic above
+featureNames <- as.character(features[featuresLite,2])
+```
+
+<h2> Step 2.) </h2>
+<h3> Clean up feature names and make descriptive </h3>
+<hr>
+
+```{r featureNames, eval=FALSE}
+#clean up feature names and make them descriptive
+featureNames <- gsub('*-meanFreq\\()*', ' MeanFreq ', featureNames)
+featureNames <- gsub('*-mean\\()*', ' Mean ', featureNames)
+featureNames <- gsub('*-std\\()*', ' StdDev ', featureNames)
+```
+
+<h2> Step 3.) </h2>
+<h3> Read in activity names as `activityLabels` and add column names</h3>
+<hr>
+Here, we name the ID column of the `activityLabels` table `activityID` so that we have a common column name to later merge the `activityLabels$activity` column with the full dataset in Step 6.) below
+
+```{r activityLabels, eval=FALSE}
+#read in activity labels as new table
+activityLabels <- read.table('./UCI HAR Dataset/activity_labels.txt')
+colnames(activityLabels) <- c('activityID','activity')
+```
+
+<h2> Step 4.) </h2>
+<h3> Read in Training set data </h3>
+<hr>
+
+```{r trainSet, eval=FALSE}
+#Read in the Training set data but get only the 'Mean' and 'Std' data
+#  according to our featuresLite logical vector created above
+subjectTrain <- read.table('./UCI HAR Dataset/train/subject_train.txt')
+xtrain <- read.table('./UCI HAR Dataset/train/X_train.txt')[featuresLite]
+ytrain <- read.table('./UCI HAR Dataset/train/Y_train.txt')
+
+#Define column names for the training data
+colnames(subjectTrain) <- "subjectID"
+colnames(xtrain) <- featureNames
+colnames(ytrain) <- "activityID"
+
+#combine the subject, y, and x training sets into one
+trainSet <- cbind(subjectTrain,ytrain,xtrain)
+```
+
+<h2> Step 5.) </h2>
+<h3> Read in Test set data </h3>
+<hr>
+
+```{r testSet, eval=FALSE}
+#Read in the Test set data but get only the 'Mean' and 'Std' data
+#  according to our featuresLite vector created above
+subjectTest <- read.table('./UCI HAR Dataset/test/subject_test.txt')
+xtest <- read.table('./UCI HAR Dataset/test/X_test.txt')[featuresLite]
+ytest <- read.table('./UCI HAR Dataset/test/Y_test.txt')
+
+colnames(subjectTest) <- "subjectID"
+colnames(xtest) <- featureNames
+colnames(ytest) <- "activityID"
+
+#combine the subject, y, and x test sets into one
+testSet <- cbind(subjectTest,ytest,xtest)
+```
+
+<h2> Step 6.) </h2>
+<h3> Combine the Test and Training sets into one dataset </h3>
+<hr>
+In this step, we combine the trainSet and testSet rows into one table using `rbind()`. We use the `merge()` function and join the new `fullSet`to the `activityLabels` table by the `activityID` common column. The `activityLabels$activity` column is then used for the descriptive activity names.  
+
+We then use `tidyr`::`gather()` to gather the columns and change the table from a wide to a long format.
+```{r cleanSet, eval=FALSE} 
+#combine the training set and test set into one full set
+fullSet <- rbind(trainSet,testSet)
+
+#merge the fullSet dataset with the activityLabels table
+fullSet <- merge(activityLabels,fullSet,'activityID')
+
+#gather columns into a long format table to create clean dataset
+cleanSet <- gather(fullSet,ncol=4:82)
+```
+
+<h2> Step 7.) </h2>
+<h3> Create tidy data set </h3>
+<hr>
+The final step is to create a tidy dataset from the above created `cleanSet`.  We do this using the `tidyr` package and chain operation `%>%`.
+<br>
+ 1.) First we `separate()` the feature column into the three delimited parts
+  and labeling the new cols appropriately: 'feature','measure','XYZ'.
+<br>
+ 2.) The next step is to `group_by()` the columns we want to summarise by. (Here, we drop the direction XYZ column so that we only deal with the average of values for all directions for a subject for a particular measurement)
+<br>
+ 3.) The third tidying is to `summarise()` the table to the mean of the values for the features we are grouping by.
+<br>
+ 4.) Finally we `spread()` the dataset by the newly created measure column.
+
+```{r tidySet, eval=FALSE}
+#create tidy set by
+# separating the feature column into the three delimited parts
+#    and labeling the new cols appropriately: 'feature','measure','XYZ'
+# grouping by all relevant columns
+# summarising by the group above for the average of all values
+# spreading the dataset by the newly created 'measure' column
+tidySet <- cleanSet %>%
+    separate(key, into=c('feature','measure','XYZ'), sep = ' ') %>%
+    group_by(feature, activityID, activity, subjectID, measure) %>%
+    summarise(Value = mean(value)) %>%
+    spread(measure, Value)
+```
