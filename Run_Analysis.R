@@ -78,7 +78,9 @@ tidySet <- cleanSet %>%
     group_by(feature, activityID, activity, subjectID, measure) %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
-    
+
+#convert to data frame    
+tidySet <- as.data.frame(tidySet)
 #save tidySet as Rdata file
 save(tidySet, file='tidySet.Rdata')
 write.table(tidySet, file='tidySet.txt')
