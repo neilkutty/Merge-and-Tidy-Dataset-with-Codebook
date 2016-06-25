@@ -24,32 +24,32 @@ For each record in the dataset it is provided:
 
 
  [1] "tBodyAcc Mean -X"               "tBodyAcc Mean -Y"               "tBodyAcc Mean -Z"              
- [4] "tBodyAcc StdDev -X"             "tBodyAcc StdDev -Y"             "tBodyAcc StdDev -Z"            
- [7] "tGravityAcc Mean -X"            "tGravityAcc Mean -Y"            "tGravityAcc Mean -Z"           
-[10] "tGravityAcc StdDev -X"          "tGravityAcc StdDev -Y"          "tGravityAcc StdDev -Z"         
-[13] "tBodyAccJerk Mean -X"           "tBodyAccJerk Mean -Y"           "tBodyAccJerk Mean -Z"          
-[16] "tBodyAccJerk StdDev -X"         "tBodyAccJerk StdDev -Y"         "tBodyAccJerk StdDev -Z"        
-[19] "tBodyGyro Mean -X"              "tBodyGyro Mean -Y"              "tBodyGyro Mean -Z"             
-[22] "tBodyGyro StdDev -X"            "tBodyGyro StdDev -Y"            "tBodyGyro StdDev -Z"           
-[25] "tBodyGyroJerk Mean -X"          "tBodyGyroJerk Mean -Y"          "tBodyGyroJerk Mean -Z"         
-[28] "tBodyGyroJerk StdDev -X"        "tBodyGyroJerk StdDev -Y"        "tBodyGyroJerk StdDev -Z"       
-[31] "tBodyAccMag Mean "              "tBodyAccMag StdDev "            "tGravityAccMag Mean "          
-[34] "tGravityAccMag StdDev "         "tBodyAccJerkMag Mean "          "tBodyAccJerkMag StdDev "       
-[37] "tBodyGyroMag Mean "             "tBodyGyroMag StdDev "           "tBodyGyroJerkMag Mean "        
-[40] "tBodyGyroJerkMag StdDev "       "fBodyAcc Mean -X"               "fBodyAcc Mean -Y"              
-[43] "fBodyAcc Mean -Z"               "fBodyAcc StdDev -X"             "fBodyAcc StdDev -Y"            
-[46] "fBodyAcc StdDev -Z"             "fBodyAcc MeanFreq -X"           "fBodyAcc MeanFreq -Y"          
-[49] "fBodyAcc MeanFreq -Z"           "fBodyAccJerk Mean -X"           "fBodyAccJerk Mean -Y"          
-[52] "fBodyAccJerk Mean -Z"           "fBodyAccJerk StdDev -X"         "fBodyAccJerk StdDev -Y"        
-[55] "fBodyAccJerk StdDev -Z"         "fBodyAccJerk MeanFreq -X"       "fBodyAccJerk MeanFreq -Y"      
-[58] "fBodyAccJerk MeanFreq -Z"       "fBodyGyro Mean -X"              "fBodyGyro Mean -Y"             
-[61] "fBodyGyro Mean -Z"              "fBodyGyro StdDev -X"            "fBodyGyro StdDev -Y"           
-[64] "fBodyGyro StdDev -Z"            "fBodyGyro MeanFreq -X"          "fBodyGyro MeanFreq -Y"         
-[67] "fBodyGyro MeanFreq -Z"          "fBodyAccMag Mean "              "fBodyAccMag StdDev "           
-[70] "fBodyAccMag MeanFreq "          "fBodyBodyAccJerkMag Mean "      "fBodyBodyAccJerkMag StdDev "   
-[73] "fBodyBodyAccJerkMag MeanFreq "  "fBodyBodyGyroMag Mean "         "fBodyBodyGyroMag StdDev "      
-[76] "fBodyBodyGyroMag MeanFreq "     "fBodyBodyGyroJerkMag Mean "     "fBodyBodyGyroJerkMag StdDev "  
-[79] "fBodyBodyGyroJerkMag MeanFreq "
+ <br>[4] "tBodyAcc StdDev -X"             "tBodyAcc StdDev -Y"             "tBodyAcc StdDev -Z"            
+ <br>[7] "tGravityAcc Mean -X"            "tGravityAcc Mean -Y"            "tGravityAcc Mean -Z"           
+<br>[10] "tGravityAcc StdDev -X"          "tGravityAcc StdDev -Y"          "tGravityAcc StdDev -Z"         
+<br>[13] "tBodyAccJerk Mean -X"           "tBodyAccJerk Mean -Y"           "tBodyAccJerk Mean -Z"          
+<br>[16] "tBodyAccJerk StdDev -X"         "tBodyAccJerk StdDev -Y"         "tBodyAccJerk StdDev -Z"        
+<br>[19] "tBodyGyro Mean -X"              "tBodyGyro Mean -Y"              "tBodyGyro Mean -Z"             
+<br>[22] "tBodyGyro StdDev -X"            "tBodyGyro StdDev -Y"            "tBodyGyro StdDev -Z"           
+<br>[25] "tBodyGyroJerk Mean -X"          "tBodyGyroJerk Mean -Y"          "tBodyGyroJerk Mean -Z"         
+<br>[28] "tBodyGyroJerk StdDev -X"        "tBodyGyroJerk StdDev -Y"        "tBodyGyroJerk StdDev -Z"       
+<br>[31] "tBodyAccMag Mean "              "tBodyAccMag StdDev "            "tGravityAccMag Mean "          
+<br>[34] "tGravityAccMag StdDev "         "tBodyAccJerkMag Mean "          "tBodyAccJerkMag StdDev "       
+<br>[37] "tBodyGyroMag Mean "             "tBodyGyroMag StdDev "           "tBodyGyroJerkMag Mean "        
+<br>[40] "tBodyGyroJerkMag StdDev "       "fBodyAcc Mean -X"               "fBodyAcc Mean -Y"              
+<br>[43] "fBodyAcc Mean -Z"               "fBodyAcc StdDev -X"             "fBodyAcc StdDev -Y"            
+<br>[46] "fBodyAcc StdDev -Z"             "fBodyAcc MeanFreq -X"           "fBodyAcc MeanFreq -Y"          
+<br>[49] "fBodyAcc MeanFreq -Z"           "fBodyAccJerk Mean -X"           "fBodyAccJerk Mean -Y"          
+<br>[52] "fBodyAccJerk Mean -Z"           "fBodyAccJerk StdDev -X"         "fBodyAccJerk StdDev -Y"        
+<br>[55] "fBodyAccJerk StdDev -Z"         "fBodyAccJerk MeanFreq -X"       "fBodyAccJerk MeanFreq -Y"      
+<br>[58] "fBodyAccJerk MeanFreq -Z"       "fBodyGyro Mean -X"              "fBodyGyro Mean -Y"             
+<br>[61] "fBodyGyro Mean -Z"              "fBodyGyro StdDev -X"            "fBodyGyro StdDev -Y"           
+<br>[64] "fBodyGyro StdDev -Z"            "fBodyGyro MeanFreq -X"          "fBodyGyro MeanFreq -Y"         
+<br>[67] "fBodyGyro MeanFreq -Z"          "fBodyAccMag Mean "              "fBodyAccMag StdDev "           
+<br>[70] "fBodyAccMag MeanFreq "          "fBodyBodyAccJerkMag Mean "      "fBodyBodyAccJerkMag StdDev "   
+<br>[73] "fBodyBodyAccJerkMag MeanFreq "  "fBodyBodyGyroMag Mean "         "fBodyBodyGyroMag StdDev "      
+<br>[76] "fBodyBodyGyroMag MeanFreq "     "fBodyBodyGyroJerkMag Mean "     "fBodyBodyGyroJerkMag StdDev "  
+<br>[79] "fBodyBodyGyroJerkMag MeanFreq "
 
 <ul><b> Environment Variables Descriptions </b></ul>
 <hr>
@@ -209,10 +209,7 @@ tidySet <- cleanSet %>%
     group_by(feature, activityID, activity, subjectID, measure) %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
-```
 
-
-```
 str(tidySet)
 'data.frame':	3060 obs. of  7 variables:
  $ feature   : chr  "fBodyAcc" "fBodyAcc" "fBodyAcc" "fBodyAcc" ...
@@ -222,19 +219,22 @@ str(tidySet)
  $ Mean      : num  -0.148 -0.274 -0.27 -0.402 -0.256 ...
  $ MeanFreq  : num  -1.49e-02 4.06e-02 -5.85e-06 -6.83e-02 -9.99e-02 ...
  $ StdDev    : num  -0.181 -0.361 -0.309 -0.381 -0.246 ...
- ```
- 
- tidySet output
- 
- $feature
- [1] "fBodyAcc"             "fBodyAccJerk"         "fBodyAccMag"          "fBodyBodyAccJerkMag"  "fBodyBodyGyroJerkMag" "fBodyBodyGyroMag"    
- [7] "fBodyGyro"            "tBodyAcc"             "tBodyAccJerk"         "tBodyAccJerkMag"      "tBodyAccMag"          "tBodyGyro"           
-[13] "tBodyGyroJerk"        "tBodyGyroJerkMag"     "tBodyGyroMag"         "tGravityAcc"          "tGravityAccMag"
+```
 
- $activity
- LAYING SITTING STANDING WALKING WALKING_DOWNSTAIRS WALKING_UPSTAIRS
+
+
+<br>
+**tidySet output**
  
- MEASURES
- Mean MeanFreq StdDev
+ `$feature`
+ <br>[1] "fBodyAcc"             "fBodyAccJerk"         "fBodyAccMag"          "fBodyBodyAccJerkMag"  "fBodyBodyGyroJerkMag" "fBodyBodyGyroMag"    
+ <br>[7] "fBodyGyro"            "tBodyAcc"             "tBodyAccJerk"         "tBodyAccJerkMag"      "tBodyAccMag"          "tBodyGyro"           
+<br>[13] "tBodyGyroJerk"        "tBodyGyroJerkMag"     "tBodyGyroMag"         "tGravityAcc"          "tGravityAccMag"
+
+ `$activity`
+ <br>LAYING SITTING STANDING WALKING WALKING_DOWNSTAIRS WALKING_UPSTAIRS
  
- *note we drop the direction XYZ segment to aggregate by Subject > Activity > Feature only for the TidySet
+ `MEASURES`
+ <br>`Mean MeanFreq StdDev`
+ <br>
+ **note we drop the direction XYZ segment from the cleanSet to aggregate by Subject > Activity > Feature only for the TidySet**
