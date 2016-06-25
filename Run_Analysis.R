@@ -67,7 +67,6 @@ fullSet <- merge(activityLabels,fullSet,'activityID')
 #gather columns into a long format table to create clean dataset
 cleanSet <- gather(fullSet,ncol=4:82)
 
-#create tidy set by
 # separating the feature column into the three delimited parts
 #    and labeling the new cols appropriately: 'feature','measure','XYZ'
 # grouping by all relevant columns
@@ -75,7 +74,7 @@ cleanSet <- gather(fullSet,ncol=4:82)
 # spreading the dataset by the newly created 'measure' column
 tidySet <- cleanSet %>%
     separate(key, into=c('feature','measure','XYZ'), sep = ' ') %>%
-    group_by(feature, activityID, activity, subjectID, measure) %>%
+    group_by(feature, activityID, activity, subjectID, XYZ, measure) %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
 
