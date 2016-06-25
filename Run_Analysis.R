@@ -14,11 +14,12 @@ url <- 'https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR
 download.file(url, destfile = 'samsung.zip', method='curl')
 unzip('samsung.zip')
 
+
 #load features table
 features <- read.table('./UCI HAR Dataset/features.txt')
-#create logical vector for features with 'Mean' and 'Std' 
+#create vector for only the features with 'Mean' and 'Std' 
 featuresLite <- grep('-[Mm]ean()|-[Ss]td()', features[,2])
-#get just the feature names for 'Mean' and 'Std' filtering on logic above
+#get just those feature names for 'Mean' and 'Std' filtering on vector above
 featureNames <- as.character(features[featuresLite,2])
 
 #clean up feature names and make them descriptive
@@ -45,7 +46,7 @@ colnames(ytrain) <- "activityID"
 trainSet <- cbind(subjectTrain,ytrain,xtrain)
 
 #Read in the Test set data but get only the 'Mean' and 'Std' data
-#  according to our featuresLite logical vector created above
+#  according to our featuresLite vector created above
 subjectTest <- read.table('./UCI HAR Dataset/test/subject_test.txt')
 xtest <- read.table('./UCI HAR Dataset/test/X_test.txt')[featuresLite]
 ytest <- read.table('./UCI HAR Dataset/test/Y_test.txt')
@@ -80,3 +81,4 @@ tidySet <- cleanSet %>%
     
 #save tidySet as Rdata file
 save(tidySet, file='tidySet.Rdata')
+write.table(tidySet, file='tidySet.txt')

@@ -1,5 +1,5 @@
 ---
-title: "Getting & Cleaning Data - Course Project"
+title: "Getting & Cleaning Data Course Project - Codebook"
 author: "Neil Kutty github.com/sampsonsimpson"
 date: "June 24, 2016"
 output: html_document
@@ -11,137 +11,153 @@ library(dplyr)
 library(tidyr)
 
 ```
-
-# Getting and Cleaning Data - Course Project<br>
-
-The purpose of this project is to demonstrate your ability to collect, work with, and clean a data set. The goal is to prepare tidy data that can be used for later analysis. You will be graded by your peers on a series of yes/no questions related to the project. You will be required to submit: 1) a tidy data set as described below, 2) a link to a Github repository with your script for performing the analysis, and 3) a code book that describes the variables, the data, and any transformations or work that you performed to clean up the data called CodeBook.md. You should also include a README.md in the repo with your scripts. This repo explains how all of the scripts work and how they are connected.
-
-One of the most exciting areas in all of data science right now is wearable computing - see for example this article . Companies like Fitbit, Nike, and Jawbone Up are racing to develop the most advanced algorithms to attract new users. The data linked to from the course website represent data collected from the accelerometers from the Samsung Galaxy S smartphone. A full description is available at the site where the data was obtained:
-
-http://archive.ics.uci.edu/ml/datasets/Human+Activity+Recognition+Using+Smartphones
-
-Here are the data for the project:
-
-https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
-
-You should create one R script called run_analysis.R that does the following.
-
-Merges the training and the test sets to create one data set.
-Extracts only the measurements on the mean and standard deviation for each measurement.
-Uses descriptive activity names to name the activities in the data set
-Appropriately labels the data set with descriptive variable names.
-From the data set in step 4, creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-Good luck!
+<h3> Codebook </h3>
+<ul><b> Variable Descriptions </b></ul>
 <hr>
-<h1> Submission </h1>
-<h2> Step 1.) </h2>
-<h3> Loading features data </h3>
-<hr>
-The first line below reads the features.txt file into variable `features`. In the second line, we use `grep` to create a vector called `featuresLite` identifying the feature names that have 'mean' and 'std' in the names.  Finally, we filter on those feature names only and store it in the variable `featureNames`. 
 
-```{r features, eval=FALSE, include=TRUE}
-#load features table
-features <- read.table('./UCI HAR Dataset/features.txt')
+**`features`** is a table containing the descriptive names of the measurements that the datasets
 
-#create vector for features with 'Mean' and 'Std' 
-featuresLite <- grep('-[Mm]ean()|-[Ss]td()', features[,2])
-
-#get just the feature names for 'Mean' and 'Std' filtering on logic above
-featureNames <- as.character(features[featuresLite,2])
 ```
-
-<h2> Step 2.) </h2>
-<h3> Clean up feature names and make descriptive </h3>
-<hr>
-
-```{r featureNames, eval=FALSE}
-#clean up feature names and make them descriptive
-featureNames <- gsub('*-meanFreq\\()*', ' MeanFreq ', featureNames)
-featureNames <- gsub('*-mean\\()*', ' Mean ', featureNames)
-featureNames <- gsub('*-std\\()*', ' StdDev ', featureNames)
+str(features)
+'data.frame':	561 obs. of  2 variables:
+ $ V1: int  1 2 3 4 5 6 7 8 9 10 ...
+ $ V2: Factor w/ 477 levels "angle(tBodyAccJerkMean),gravityMean)",..: 243 244 245 250 251 252 237 238 239 240 ...
 ```
-
-<h2> Step 3.) </h2>
-<h3> Read in activity names as `activityLabels` and add column names</h3>
-<hr>
-Here, we name the ID column of the `activityLabels` table `activityID` so that we have a common column name to later merge the `activityLabels$activity` column with the full dataset in Step 6.) below
-
-```{r activityLabels, eval=FALSE}
-#read in activity labels as new table
-activityLabels <- read.table('./UCI HAR Dataset/activity_labels.txt')
-colnames(activityLabels) <- c('activityID','activity')
-```
-
-<h2> Step 4.) </h2>
-<h3> Read in Training set data </h3>
-<hr>
-
-```{r trainSet, eval=FALSE}
-#Read in the Training set data but get only the 'Mean' and 'Std' data
-#  according to our featuresLite logical vector created above
-subjectTrain <- read.table('./UCI HAR Dataset/train/subject_train.txt')
-xtrain <- read.table('./UCI HAR Dataset/train/X_train.txt')[featuresLite]
-ytrain <- read.table('./UCI HAR Dataset/train/Y_train.txt')
-
-#Define column names for the training data
-colnames(subjectTrain) <- "subjectID"
-colnames(xtrain) <- featureNames
-colnames(ytrain) <- "activityID"
-
-#combine the subject, y, and x training sets into one
-trainSet <- cbind(subjectTrain,ytrain,xtrain)
-```
-
-<h2> Step 5.) </h2>
-<h3> Read in Test set data </h3>
-<hr>
-
-```{r testSet, eval=FALSE}
-#Read in the Test set data but get only the 'Mean' and 'Std' data
-#  according to our featuresLite vector created above
-subjectTest <- read.table('./UCI HAR Dataset/test/subject_test.txt')
-xtest <- read.table('./UCI HAR Dataset/test/X_test.txt')[featuresLite]
-ytest <- read.table('./UCI HAR Dataset/test/Y_test.txt')
-
-colnames(subjectTest) <- "subjectID"
-colnames(xtest) <- featureNames
-colnames(ytest) <- "activityID"
-
-#combine the subject, y, and x test sets into one
-testSet <- cbind(subjectTest,ytest,xtest)
-```
-
-<h2> Step 6.) </h2>
-<h3> Combine the Test and Training sets into one dataset </h3>
-<hr>
-In this step, we combine the trainSet and testSet rows into one table using `rbind()`. We use the `merge()` function and join the new `fullSet`to the `activityLabels` table by the `activityID` common column. The `activityLabels$activity` column is then used for the descriptive activity names.  
-
-We then use `tidyr`::`gather()` to gather the columns and change the table from a wide to a long format.
-```{r cleanSet, eval=FALSE} 
-#combine the training set and test set into one full set
-fullSet <- rbind(trainSet,testSet)
-
-#merge the fullSet dataset with the activityLabels table
-fullSet <- merge(activityLabels,fullSet,'activityID')
-
-#gather columns into a long format table to create clean dataset
-cleanSet <- gather(fullSet,ncol=4:82)
-```
-
-<h2> Step 7.) </h2>
-<h3> Create tidy data set </h3>
-<hr>
-The final step is to create a tidy dataset from the above created `cleanSet`.  We do this using the `tidyr` package and chain operation `%>%`.
 <br>
- 1.) First we `separate()` the feature column into the three delimited parts
-  and labeling the new cols appropriately: 'feature','measure','XYZ'.
+**`features`** is used to create **`featuresLite`** a vector with the rows of only those feature names that contain 'Mean' and 'Std'.  
 <br>
- 2.) The next step is to `group_by()` the columns we want to summarise by. (Here, we drop the direction XYZ column so that we only deal with the average of values for all directions for a subject for a particular measurement)
-<br>
- 3.) The third tidying is to `summarise()` the table to the mean of the values for the features we are grouping by.
-<br>
- 4.) Finally we `spread()` the dataset by the newly created measure column.
+**`featureNames`** is a character vector created from subsetting the
+**`features`** descriptive names column for only the names we want (those containing 'Mean' and 'Std'). We end up with only 79 of the original 561 features that we actually need the data from.  This will make reading in the data a lot easier. We then clean it to remove the extra characters and we have our list of feature names.
 
+```
+str(featureNames)
+chr [1:79] "tBodyAcc Mean -X" "tBodyAcc Mean -Y" ...
+```
+<br>
+**`activityLabels`** is a data frame with the activity labels. The name of the ID column is named `activityID` to create a common column name across the tables we intend to later `merge()`
+
+```
+str(activityLabels)
+'data.frame':	6 obs. of  2 variables:
+ $ activityID: int  1 2 3 4 5 6
+ $ activity  : Factor w/ 6 levels "LAYING","SITTING",..: 4 6 5 2 3 1
+```
+
+<br>
+**`subjectTrain`** - data frame with the subjectID column.
+```
+str(subjectTrain)
+'data.frame':	7352 obs. of  1 variable:
+ $ subjectID: int  1 1 1 1 1 1 1 1 1 1 ...
+```
+
+<br>
+**`xtrain`**  - data frame with values for of the features for a particular subject and activity for the train data.
+```
+First Five Lines
+str(xtrain)
+'data.frame':	7352 obs. of  79 variables:
+ $ tBodyAcc Mean -X              : num  0.289 0.278 0.28 0.279 0.277 ...
+ $ tBodyAcc Mean -Y              : num  -0.0203 -0.0164 -0.0195 -0.0262 -0.0166 ...
+ $ tBodyAcc Mean -Z              : num  -0.133 -0.124 -0.113 -0.123 -0.115 ...
+ $ tBodyAcc StdDev -X            : num  -0.995 -0.998 -0.995 -0.996 -0.998 ...
+ $ tBodyAcc StdDev -Y            : num  -0.983 -0.975 -0.967 -0.983 -0.981 ...
+ ...
+```
+
+<br>
+**`ytrain`** - data frame with the activityID column for the train data.
+```
+str(ytrain)
+'data.frame':	7352 obs. of  1 variable:
+ $ activityID: int  5 5 5 5 5 5 5 5 5 5 ...
+```
+
+<br>
+**`trainSet`** - data frame created by combining the `subjectTrain`,`ytrain`, and `xtrain` dataframes using `cbind()`.
+```
+First Five Lines
+str(trainSet)
+'data.frame':	7352 obs. of  81 variables:
+ $ subjectID                     : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ activityID                    : int  5 5 5 5 5 5 5 5 5 5 ...
+ $ tBodyAcc Mean -X              : num  0.289 0.278 0.28 0.279 0.277 ...
+ $ tBodyAcc Mean -Y              : num  -0.0203 -0.0164 -0.0195 -0.0262 -0.0166 ...
+ $ tBodyAcc Mean -Z              : num  -0.133 -0.124 -0.113 -0.123 -0.115 ...
+ ...
+```
+
+
+<br>
+**`subjectTest`** - data frame with the subjectID column for the test data.
+```
+str(subjectTest)
+'data.frame':	2947 obs. of  1 variable:
+ $ subjectID: int  2 2 2 2 2 2 2 2 2 2 ...
+```
+
+<br>
+**`xtest`**  - data frame with values for of the features for a particular subject and activity for the test data.
+```
+First Five Lines
+str(xtest)
+'data.frame':	2947 obs. of  79 variables:
+ $ tBodyAcc Mean -X              : num  0.257 0.286 0.275 0.27 0.275 ...
+ $ tBodyAcc Mean -Y              : num  -0.0233 -0.0132 -0.0261 -0.0326 -0.0278 ...
+ $ tBodyAcc Mean -Z              : num  -0.0147 -0.1191 -0.1182 -0.1175 -0.1295 ...
+ $ tBodyAcc StdDev -X            : num  -0.938 -0.975 -0.994 -0.995 -0.994 ...
+ $ tBodyAcc StdDev -Y            : num  -0.92 -0.967 -0.97 -0.973 -0.967 ...
+ ...
+```
+
+<br>
+**`ytest`** - data frame with the activityID column for the test data..
+```
+str(ytest)
+'data.frame':	2947 obs. of  1 variable:
+ $ activityID: int  5 5 5 5 5 5 5 5 5 5 ...
+```
+
+<br>
+**`testSet`** - data frame created by combining the `subjectTest`,`ytest`, and `xtest` dataframes using `cbind()`.
+```
+First Five Lines
+str(testSet)
+'data.frame':	2947 obs. of  81 variables:
+ $ subjectID                     : int  2 2 2 2 2 2 2 2 2 2 ...
+ $ activityID                    : int  5 5 5 5 5 5 5 5 5 5 ...
+ $ tBodyAcc Mean -X              : num  0.257 0.286 0.275 0.27 0.275 ...
+ $ tBodyAcc Mean -Y              : num  -0.0233 -0.0132 -0.0261 -0.0326 -0.0278 ...
+ $ tBodyAcc Mean -Z              : num  -0.0147 -0.1191 -0.1182 -0.1175 -0.1295 ...
+ ...
+```
+
+<br>
+**`fullSet`** - created by first joining the `trainSet` and `testSet` rows and then merging the result with the `activityLabels` table for the descriptive activity. 
+```
+ str(fullSet)
+'data.frame':	10299 obs. of  82 variables:
+ $ activityID                    : int  1 1 1 1 1 1 1 1 1 1 ...
+ $ activity                      : Factor w/ 6 levels "LAYING","SITTING",..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ subjectID                     : int  28 28 28 28 28 28 28 28 28 28 ...
+ $ tBodyAcc Mean -X              : num  0.308 0.168 0.343 0.31 0.17 ...
+ $ tBodyAcc Mean -Y              : num  -0.00617 -0.01862 -0.02722 -0.04363 -0.00886 ...
+```
+
+<br>
+**`cleanSet`** - created by gathering the columns of `fullSet` into a long table format.
+```
+str(cleanSet)
+'data.frame':	813621 obs. of  5 variables:
+ $ activityID: int  1 1 1 1 1 1 1 1 1 1 ...
+ $ activity  : Factor w/ 6 levels "LAYING","SITTING",..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ subjectID : int  28 28 28 28 28 28 28 28 28 28 ...
+ $ key       : chr  "tBodyAcc Mean -X" "tBodyAcc Mean -X" "tBodyAcc Mean -X" "tBodyAcc Mean -X" ...
+ $ value     : num  0.308 0.168 0.343 0.31 0.17 ...
+```
+
+<br>
+**`tidySet`** - created by utilizing a chain operation of `dplyr` and `tidyr` functions:
 ```{r tidySet, eval=FALSE}
 #create tidy set by
 # separating the feature column into the three delimited parts
@@ -155,3 +171,16 @@ tidySet <- cleanSet %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
 ```
+
+
+```
+str(tidySet)
+'data.frame':	3060 obs. of  7 variables:
+ $ feature   : chr  "fBodyAcc" "fBodyAcc" "fBodyAcc" "fBodyAcc" ...
+ $ activityID: int  1 1 1 1 1 1 1 1 1 1 ...
+ $ activity  : Factor w/ 6 levels "LAYING","SITTING",..: 4 4 4 4 4 4 4 4 4 4 ...
+ $ subjectID : int  1 2 3 4 5 6 7 8 9 10 ...
+ $ Mean      : num  -0.148 -0.274 -0.27 -0.402 -0.256 ...
+ $ MeanFreq  : num  -1.49e-02 4.06e-02 -5.85e-06 -6.83e-02 -9.99e-02 ...
+ $ StdDev    : num  -0.181 -0.361 -0.309 -0.381 -0.246 ...
+ ```
