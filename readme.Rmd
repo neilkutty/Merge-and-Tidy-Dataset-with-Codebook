@@ -133,10 +133,9 @@ The final step is to create a tidy dataset from the above created `cleanSet`.  W
 <br>
  3.) The third tidying is to `summarise()` the table to the mean of the values for the features we are grouping by.
 <br>
- 4.) Finally we `spread()` the dataset by the newly created measure column.
+ 4.) Finally we `spread()` the dataset by the newly created measure column and cleanup the table before writing it to a file.
 
 ```{r tidySet, eval=FALSE}
-#create tidy set by
 # separating the feature column into the three delimited parts
 #    and labeling the new cols appropriately: 'feature','measure','XYZ'
 # grouping by all relevant columns
@@ -144,7 +143,15 @@ The final step is to create a tidy dataset from the above created `cleanSet`.  W
 # spreading the dataset by the newly created 'measure' column
 tidySet <- cleanSet %>%
     separate(key, into=c('feature','measure','XYZ'), sep = ' ') %>%
-    group_by(feature, activityID, activity, subjectID, measure) %>%
+    group_by(feature, activityID, activity, subjectID, XYZ, measure) %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
+
+#clean XYZ column
+tidySet$XYZ <- gsub('-','',tidySet$XYZ)
+#convert to data frame    
+tidySet <- as.data.frame(tidySet)
+#save tidySet as Rdata file
+save(tidySet, file='tidySet.Rdata')
+write.table(tidySet, file='tidySet.txt')
 ```

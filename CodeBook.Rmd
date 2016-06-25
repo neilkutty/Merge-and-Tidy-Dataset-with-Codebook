@@ -230,11 +230,11 @@ str(tidySet)
  <br>[1] "fBodyAcc"             "fBodyAccJerk"         "fBodyAccMag"          "fBodyBodyAccJerkMag"  "fBodyBodyGyroJerkMag" "fBodyBodyGyroMag"    
  <br>[7] "fBodyGyro"            "tBodyAcc"             "tBodyAccJerk"         "tBodyAccJerkMag"      "tBodyAccMag"          "tBodyGyro"           
 <br>[13] "tBodyGyroJerk"        "tBodyGyroJerkMag"     "tBodyGyroMag"         "tGravityAcc"          "tGravityAccMag"
-
- `$activity`
- <br>LAYING SITTING STANDING WALKING WALKING_DOWNSTAIRS WALKING_UPSTAIRS
+<br><br> `$activity`
+<br>LAYING SITTING STANDING WALKING WALKING_DOWNSTAIRS WALKING_UPSTAIRS
+<br><br> `$XYZ`
+<br>`X Y Z`
+<br><br> **MEASURES**
+<br>`Mean MeanFreq StdDev`
+<br>
  
- `MEASURES`
- <br>`Mean MeanFreq StdDev`
- <br>
- **note we drop the direction XYZ segment from the cleanSet to aggregate by Subject > Activity > Feature only for the TidySet**
