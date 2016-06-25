@@ -78,6 +78,8 @@ tidySet <- cleanSet %>%
     summarise(Value = mean(value)) %>%
     spread(measure, Value)
 
+#clean XYZ column
+tidySet$XYZ <- gsub('-','',tidySet$XYZ)
 #convert to data frame    
 tidySet <- as.data.frame(tidySet)
 #save tidySet as Rdata file
