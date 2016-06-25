@@ -1,4 +1,4 @@
-# Getting and Cleaning Data - Course Project
+a# Getting and Cleaning Data - Course Project
 # run_analysis.R submission by github.com/sampsonsimpson
 #_____________________________________________
 
