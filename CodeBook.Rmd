@@ -5,17 +5,11 @@ date: "June 24, 2016"
 output: html_document
 ---
 
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = TRUE)
-library(dplyr)
-library(tidyr)
-
-```
 <h3> Codebook </h3>
 <ul><b> Variable Descriptions </b></ul>
 <hr>
 
-**`features`** is a table containing the descriptive names of the measurements that the datasets
+**`features`** is a table containing the descriptive names of the measurements that they are included in the test and train datasets.
 
 ```
 str(features)
