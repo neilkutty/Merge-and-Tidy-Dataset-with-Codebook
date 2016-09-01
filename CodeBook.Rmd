@@ -1,5 +1,5 @@
 ---
-title: "Getting & Cleaning Data Course Project - Codebook"
+title: "Accelerometer & Gyroscope Data Codebook"
 author: "Neil Kutty github.com/sampsonsimpson"
 date: "June 24, 2016"
 output: html_document
